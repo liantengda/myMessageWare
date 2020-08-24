@@ -31,6 +31,7 @@ public class ScheduleJobAutoConfiguration {
      */
     private final RedissonClient redisson = Redisson.create();
 
+    //每10s进行一次执行
     @Scheduled(fixedDelay = 10000)
     public void transactionalMessageCompensationTask() throws Exception {
         RLock lock = redisson.getLock("transactionalMessageCompensationTask");
