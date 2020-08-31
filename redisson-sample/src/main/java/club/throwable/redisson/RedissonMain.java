@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
+ * 悲观锁强依赖数据库的可用性，数据库是单点，一旦挂掉，导致业务系统不可用
+ * 一旦悲观锁解锁操作失败，就会导致锁记录一直在数据库中，其他线程无法再获得锁
+ * 乐观锁适合读多写少的场景。
  * @author throwable
  * @version v1.0
  * @description
@@ -32,7 +36,7 @@ public class RedissonMain {
                     e.printStackTrace();
                 }
             });
-            thread.setName("线程-" + i);
+            thread.setName("线程" + i);
             thread.setDaemon(true);
             threads.add(thread);
         }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * 消息状态
  * @author throwable
  * @version v1.0
  * @description

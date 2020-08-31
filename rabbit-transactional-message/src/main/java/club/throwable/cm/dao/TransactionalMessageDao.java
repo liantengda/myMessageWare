@@ -18,6 +18,13 @@ public interface TransactionalMessageDao {
 
     void updateStatusSelective(TransactionalMessage record);
 
+    /**
+     * 查询推送补偿记录
+     * @param minScheduleTime
+     * @param maxScheduleTime
+     * @param limit
+     * @return
+     */
     List<TransactionalMessage> queryPendingCompensationRecords(LocalDateTime minScheduleTime,
                                                                LocalDateTime maxScheduleTime,
                                                                int limit);

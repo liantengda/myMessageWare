@@ -35,12 +35,14 @@ public class MockBusinessService {
     public void saveOrder() throws Exception {
         String orderId = UUID.randomUUID().toString();
         BigDecimal amount = BigDecimal.valueOf(100L);
+        Long createTime = System.currentTimeMillis();
         Map<String, Object> message = new HashMap<>();
         message.put("orderId", orderId);
         message.put("amount", amount);
-        jdbcTemplate.update("INSERT INTO t_order(order_id,amount) VALUES (?,?)", p -> {
+        jdbcTemplate.update("INSERT INTO t_order(order_id,amount,create_time) VALUES (?,?,?)", p -> {
             p.setString(1, orderId);
             p.setBigDecimal(2, amount);
+            p.setLong(3,createTime);
         });
         String content = objectMapper.writeValueAsString(message);
         transactionalMessageService.sendTransactionalMessage(

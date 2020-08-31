@@ -58,7 +58,7 @@ public class TransactionalMessageManagementService {
             if (log.isDebugEnabled()) {
                 log.debug("发送消息成功,目标队列:{},消息内容:{}", record.getQueueName(), content);
             }
-            // 标记成功
+            // 标记成功---------如果发送成功，则新增成功
             markSuccess(record);
         } catch (Exception e) {
             // 标记失败
@@ -66,6 +66,10 @@ public class TransactionalMessageManagementService {
         }
     }
 
+    /**
+     * 如果消息正常发送，则标记该条记录为成功
+     * @param record
+     */
     private void markSuccess(TransactionalMessage record) {
         // 标记下一次执行时间为最大值
         record.setNextScheduleTime(END);
@@ -76,6 +80,11 @@ public class TransactionalMessageManagementService {
         messageDao.updateStatusSelective(record);
     }
 
+    /**
+     * 如果消息发送失败，则标记该条记录为失败
+     * @param record
+     * @param e
+     */
     private void markFail(TransactionalMessage record, Exception e) {
         log.error("发送消息失败,目标队列:{}", record.getQueueName(), e);
         record.setCurrentRetryTimes(record.getCurrentRetryTimes().compareTo(record.getMaxRetryTimes()) >= 0 ?
@@ -148,6 +157,7 @@ public class TransactionalMessageManagementService {
             contentDao.queryByMessageIds(joiner.toString())
                     .forEach(item -> {
                         TransactionalMessage message = collect.get(item.getMessageId());
+                        //同步发送补偿消息
                         sendMessageSync(message, item.getContent());
                     });
         }

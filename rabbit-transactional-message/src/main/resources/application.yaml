@@ -6,6 +6,20 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: admin
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: rabbit
+    password: admin
+    virtual-host: /
+    template:
+      retry: #重试
+        enabled: true
+        initial-interval: 10000ms #第一次重试
+        max-interval: 80000ms
+        multiplier: 2 # 第二次重试时间乘2
+    publisher-confirms: true  #发布者确认(消息没丢放到队列里面了)
 logging:
   level:
     root: debug

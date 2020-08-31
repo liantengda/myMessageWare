@@ -10,6 +10,10 @@ import club.throwable.cm.support.message.TxMessage;
  * @since 2020/2/3 9:59
  */
 public interface TransactionalMessageService {
-
+    /**
+     * 发送事务消息
+     * @param destination
+     * @param message
+     */
     void sendTransactionalMessage(Destination destination, TxMessage message);
 }

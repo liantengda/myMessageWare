@@ -11,9 +11,24 @@ import lombok.Builder;
 @Builder
 public class DefaultDestination implements Destination {
 
+    /**
+     * 交换类型
+     */
     private ExchangeType exchangeType;
+
+    /**
+     * 队列名
+     */
     private String queueName;
+
+    /**
+     * 交换器名
+     */
     private String exchangeName;
+
+    /**
+     * 路由键
+     */
     private String routingKey;
 
     @Override

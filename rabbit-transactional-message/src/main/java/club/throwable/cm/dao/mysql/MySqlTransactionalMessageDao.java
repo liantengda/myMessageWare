@@ -205,7 +205,8 @@ public class MySqlTransactionalMessageDao implements TransactionalMessageDao {
     public List<TransactionalMessage> queryPendingCompensationRecords(LocalDateTime minScheduleTime,
                                                                       LocalDateTime maxScheduleTime,
                                                                       int limit) {
-        return jdbcTemplate.query("SELECT * FROM t_transactional_message WHERE next_schedule_time >= ? " +
+        //查询在接下来的定时时间内，消息状态不成功的指定几条记录
+        List<TransactionalMessage> list = jdbcTemplate.query("SELECT * FROM t_transactional_message WHERE next_schedule_time >= ? " +
                         "AND next_schedule_time <= ? AND message_status <> ? AND current_retry_times < max_retry_times LIMIT ?",
                 p -> {
                     p.setTimestamp(1, Timestamp.valueOf(minScheduleTime));
@@ -214,6 +215,8 @@ public class MySqlTransactionalMessageDao implements TransactionalMessageDao {
                     p.setInt(4, limit);
                 },
                 MULTI);
+
+        return list;
     }
 
     private static class IndexHolder {

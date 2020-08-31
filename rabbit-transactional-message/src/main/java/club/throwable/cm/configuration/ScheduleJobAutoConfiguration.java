@@ -37,6 +37,7 @@ public class ScheduleJobAutoConfiguration {
         RLock lock = redisson.getLock("transactionalMessageCompensationTask");
         // 等待时间5秒,预期300秒执行完毕,这两个值需要按照实际场景定制
         boolean tryLock = lock.tryLock(5, 300, TimeUnit.SECONDS);
+        //每次等待5秒重试取锁
         if (tryLock) {
             try {
                 long start = System.currentTimeMillis();
