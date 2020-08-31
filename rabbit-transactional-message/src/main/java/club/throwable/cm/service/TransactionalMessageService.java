@@ -12,6 +12,8 @@ import club.throwable.cm.support.message.TxMessage;
 public interface TransactionalMessageService {
     /**
      * 发送事务消息
+     *
+     * 该消息在事务成功后发送到rabbit服务器中
      * @param destination
      * @param message
      */

@@ -56,10 +56,11 @@ public class RabbitTransactionalMessageService implements TransactionalMessageSe
         String content = message.content();
         // 保存事务消息记录
         managementService.saveTransactionalMessageRecord(record, content);
-        // 注册事务同步器
+        // 注册事务同步器----------》最重要的地方在这里,整个事务结束之后再发送消息。
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
             @Override
             public void afterCommit() {
+                System.out.println("事务提交成功");
                 managementService.sendMessageSync(record, content);
             }
         });
